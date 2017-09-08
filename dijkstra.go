@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/goadesign/goa"
-	"github.com/schiob/dijkstra/app"
+	"github.com/schiob/AAAS/app"
 )
 
 // DijkstraController implements the dijkstra resource.

@@ -4,8 +4,8 @@
 //
 // Command:
 // $ goagen
-// --design=github.com/schiob/dijkstra/design
-// --out=$(GOPATH)/src/github.com/schiob/dijkstra
+// --design=github.com/schiob/AAAS/design
+// --out=$(GOPATH)/src/github.com/schiob/AAAS
 // --version=v1.2.0-dirty
 
 package test
@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/goatest"
-	"github.com/schiob/dijkstra/app"
+	"github.com/schiob/AAAS/app"
 	"io"
 	"log"
 	"net/http"
