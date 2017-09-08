@@ -1,0 +1,220 @@
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  GraphPayload:
+    example:
+      directed: true
+      edge_num: 1.9287845e+18
+      edges:
+      - destination: 2.7012018e+18
+        origin: 4.641006e+17
+        weight: 1.2083473e+17
+      - destination: 2.7012018e+18
+        origin: 4.641006e+17
+        weight: 1.2083473e+17
+      node_num: 5.659666e+18
+      start: 4.606888e+17
+    properties:
+      directed:
+        description: True if directed graph
+        example: true
+        type: boolean
+      edge_num:
+        description: number of edges
+        example: 1.9287845e+18
+        format: int64
+        type: integer
+      edges:
+        description: Edges of the graph
+        example:
+        - destination: 2.7012018e+18
+          origin: 4.641006e+17
+          weight: 1.2083473e+17
+        - destination: 2.7012018e+18
+          origin: 4.641006e+17
+          weight: 1.2083473e+17
+        items:
+          $ref: '#/definitions/edge'
+        type: array
+      node_num:
+        description: number of nodes
+        example: 5.659666e+18
+        format: int64
+        type: integer
+      start:
+        description: Id of starting node
+        example: 4.606888e+17
+        format: int64
+        type: integer
+    required:
+    - start
+    - directed
+    - node_num
+    - edge_num
+    - edges
+    title: GraphPayload
+    type: object
+  Graphresult:
+    description: A graph result (default view)
+    example:
+      fathers:
+      - 3.819595e+17
+      - 3.819595e+17
+      shortest:
+      - 6.837655e+18
+      start: 4.6301133e+18
+    properties:
+      fathers:
+        description: Father of every node
+        example:
+        - 3.819595e+17
+        - 3.819595e+17
+        items:
+          example: 3.819595e+17
+          format: int64
+          type: integer
+        type: array
+      shortest:
+        description: Resut for every node
+        example:
+        - 6.837655e+18
+        items:
+          example: 6.837655e+18
+          format: int64
+          type: integer
+        type: array
+      start:
+        description: ID of start point
+        example: 4.6301133e+18
+        format: int64
+        type: integer
+    required:
+    - start
+    - shortest
+    - fathers
+    title: 'Mediatype identifier: application/vnd.graphresult+json; view=default'
+    type: object
+  edge:
+    example:
+      destination: 2.7012018e+18
+      origin: 4.641006e+17
+      weight: 1.2083473e+17
+    properties:
+      destination:
+        description: Id of destination node
+        example: 2.7012018e+18
+        format: int64
+        type: integer
+      origin:
+        description: Id of origin node
+        example: 4.641006e+17
+        format: int64
+        type: integer
+      weight:
+        description: Weight of the edge
+        example: 1.2083473e+17
+        format: int64
+        type: integer
+    required:
+    - origin
+    - destination
+    - weight
+    title: edge
+    type: object
+  error:
+    description: Error response media type (default view)
+    example:
+      code: invalid_value
+      detail: Value of ID must be an integer
+      id: 3F1FKVRR
+      meta:
+        timestamp: 1.458609e+09
+      status: "400"
+    properties:
+      code:
+        description: an application-specific error code, expressed as a string value.
+        example: invalid_value
+        type: string
+      detail:
+        description: a human-readable explanation specific to this occurrence of the
+          problem.
+        example: Value of ID must be an integer
+        type: string
+      id:
+        description: a unique identifier for this particular occurrence of the problem.
+        example: 3F1FKVRR
+        type: string
+      meta:
+        additionalProperties: true
+        description: a meta object containing non-standard meta-information about
+          the error.
+        example:
+          timestamp: 1.458609e+09
+        type: object
+      status:
+        description: the HTTP status code applicable to this problem, expressed as
+          a string value.
+        example: "400"
+        type: string
+    title: 'Mediatype identifier: application/vnd.goa.error; view=default'
+    type: object
+host: localhost:8080
+info:
+  description: A simple implementation of different algorithms
+  title: Algorithms as a service
+  version: ""
+paths:
+  /dijkstra:
+    post:
+      description: Calculate shortest path
+      operationId: dijkstra#compute
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/GraphPayload'
+      produces:
+      - application/vnd.goa.error
+      - application/vnd.graphresult+json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Graphresult'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/error'
+      schemes:
+      - http
+      summary: compute dijkstra
+      tags:
+      - dijkstra
+  /swagger.json:
+    get:
+      operationId: swagger#/swagger.json
+      responses:
+        "200":
+          description: File downloaded
+          schema:
+            type: file
+      schemes:
+      - http
+      summary: Download swagger/swagger.json
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/Graphresult'
+schemes:
+- http
+swagger: "2.0"
